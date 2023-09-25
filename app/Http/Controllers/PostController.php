@@ -29,7 +29,7 @@ class PostController extends Controller
                 ->make(true);
         }
 
-    return view('welcome');
+    return view('posts.index');
   }
 
     /**
@@ -37,7 +37,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+
     }
 
     /**
@@ -45,7 +45,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+      $postId = $request->id;
+  
+      $post   =   Post::updateOrCreate(
+        [
+          'id' => $postId
+        ],
+        [
+          'name' => $request->name, 
+          'email' => $request->email,
+          'address' => $request->address
+        ]);
+                          
+      return Response()->json($post);
     }
 
     /**
@@ -59,9 +71,12 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Request $request)
     {
-        //
+      $where = array('id' => $request->id);
+      $post  = Post::where($where)->first();
+       
+      return Response()->json($post);
     }
 
     /**
@@ -75,8 +90,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request)
     {
-        //
+      $post = Post::where('id',$request->id)->delete();
+       
+      return Response()->json($post);
     }
 }
