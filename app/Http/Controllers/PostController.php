@@ -14,17 +14,20 @@ class PostController extends Controller
    */
   public function index(Request $request)
   {
-    if ($request->ajax()) {
-      $data = Post::select('*');
-      return Datatables::of($data)
-        ->addIndexColumn()
-        ->addColumn('action', function($row){
-            $actionBtn = '<a href="javascript:void(0)" class="edit btn btn-success btn-sm">Edit</a> <a href="javascript:void(0)" class="delete btn btn-danger btn-sm">Delete</a>';
-            return $actionBtn;
-        })
-        ->rawColumns(['action'])
-        ->make(true);
-    }
+        if ($request->ajax()) {
+            $data = Post::select('*');
+            return Datatables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function($row){
+                    $actionBtn = 
+                    '<a href="javascript:void(0)" class="show btn btn-info btn-sm"><i class="fa fa-eye"></i></a> 
+                    <a href="javascript:void(0)" class="edit btn btn-success btn-sm"><i class="fa fa-edit ml-1"></i></a> 
+                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm"><i class="fa fa-trash ml-1"></i></a>';
+                    return $actionBtn;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
 
     return view('welcome');
   }

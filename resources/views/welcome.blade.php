@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Step-by-Step Tutorial: Implementing Yajra Datatables in Laravel 10 - CodeAndDeploy.com</title>
+    <title>C&D L10DTBlog</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+    <script src="https://kit.fontawesome.com/99b180662f.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
@@ -22,7 +25,7 @@
         <th>Title</th>
         <th>Category</th>
         <th>Tag</th>
-        <th width="110px">Action</th>
+        <th width="125px">Action</th>
       </tr>
     </thead>
     <tbody>
