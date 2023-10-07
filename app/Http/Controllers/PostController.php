@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-// use Yajra\DataTables\Facades\Datatables;
+use Carbon\Carbon;
 use DataTables;
 
 class PostController extends Controller
@@ -14,22 +14,31 @@ class PostController extends Controller
    */
   public function index(Request $request)
   {
-        if ($request->ajax()) {
-            $data = Post::select('*');
-            return Datatables::of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function($row){
-                    $actionBtn = 
-                    '<a href="javascript:void(0)" class="show btn btn-info btn-sm"><i class="fa fa-eye"></i></a> 
-                    <a href="javascript:void(0)" class="edit btn btn-success btn-sm"><i class="fa fa-edit ml-1"></i></a> 
-                    <a href="javascript:void(0)" class="delete btn btn-danger btn-sm"><i class="fa fa-trash ml-1"></i></a>';
-                    return $actionBtn;
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
+    $posts=[];
 
-    return view('posts.index');
+    if ($request->ajax()) {
+      // return DataTables::of(Post::query())->toJson();
+      // $posts = Post::select(['id','title','category','tag','created_at']);
+      $posts = Post::query();
+        return DataTables::of( $posts )
+          ->addIndexColumn()
+          ->editColumn('created_at', function( Post $post ) { 
+            $formatedDate = Carbon::parse( $post->created_at)->format('D Y-M-d');
+            return $formatedDate; 
+          })
+          ->addColumn('action', function( $row ) {
+            $actionBtn = 
+            '<a href="javascript:void(0)" class="show btn btn-info btn-sm py-0"><i class="fa fa-eye"></i></a> 
+            <a href="javascript:void(0)" class="edit btn btn-warning btn-sm py-0"><i class="fa fa-edit ml-1"></i></a> 
+            <a href="javascript:void(0)" class="delete btn btn-danger btn-sm py-0"><i class="fa fa-trash ml-1"></i></a>
+            ';
+             return $actionBtn;
+        })
+          ->rawColumns( array('action') )
+          ->make(true);
+      }
+
+    return view('posts.index', ['posts' => $posts]);
   }
 
     /**

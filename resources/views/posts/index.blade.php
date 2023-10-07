@@ -1,51 +1,83 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>C&D L10DTBlog</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@extends('layouts.app')
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.1/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.11.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-
-    <script src="https://kit.fontawesome.com/99b180662f.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>  
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
-    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="https://cdn.datatables.net/1.11.4/js/dataTables.bootstrap5.min.js"></script>
-</head>
-<body>
-     
+@section('content')
 <div class="container">
-  <h3>Yajra Datatables in Laravel 10 - CodeAndDeploy.com</h3>
-  <table class="table table-bordered data-table">
+  <h3>Posts</h3>
+  <table class="table display table-dark table-sm table-bordered data-table">
+  {{-- <table id="postsTable" class="table table-hover table-bordered table-striped data-table"> --}}
     <thead>
       <tr>
-        <th>No</th>
+        <th class="text-center" style="width: 4%;">ID</th>
         <th>Title</th>
-        <th>Category</th>
-        <th>Tag</th>
-        <th width="125px">Action</th>
+        <th class="text-center" style="width: 130px;">Category</th>
+        <th class="text-center">Tag</th>
+        <th class="text-center" style="width: 100px;">Created</th>
+        <th class="text-center" style="width: 110px;">
+          <a href="#" class="add-modal btn btn-success btn-sm">
+            <i class="fa fa-plus"></i> New Post
+          </a>
+        </th>
       </tr>
     </thead>
     <tbody>
+      {{-- @foreach ($posts as $post)
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>{{ date("D Y-M-d", strtotime($post->created_at)) }}</td>
+        <td></td>
+      </tr>
+      @endforeach --}}
     </tbody>
   </table>
 </div>
-     
-</body>
-     
+
 <script type="text/javascript">
   $(function () {
       
     var table = $('.data-table').DataTable({
+      ajax: "{{ route('posts.index') }}",
+      processing: true,
+      serverSide: true,
+      lengthMenu: [
+        [10, 20, 25, 50, -1],
+        [10, 20, 25, 50, 'All']
+      ],
+      columnDefs: [
+        {
+          targets: [0,2,3,4,5],
+          className: 'dt-body-center'
+        }
+      ],
+      columns: [
+        {data: 'id', name: 'id'},
+        {data: 'title', name: 'title'},
+        {data: 'category', name: 'category'},
+        {data: 'tag', name: 'tag'},
+        {data: 'created_at', name: 'created_at'},
+        {data: 'action', name: 'action', orderable: false, searchable: false},
+      ]
+    });
+      
+  });
+</script>
+
+@endsection
+
+@section('javascripts')
+<script type="text/javascript">
+  $(function () {
+      
+    var table = $('.data-table').DataTable({
+      ajax: "{{ route('posts.index') }}",
       processing: true,
       serverSide: true,
       lengthMenu: [
         [10, 20, 25, 50, -1],
         [10, 20, 25, 50, 'All']
     ],
-      ajax: "{{ route('posts.index') }}",
       columns: [
         {data: 'id', name: 'id'},
         {data: 'title', name: 'title'},
@@ -57,4 +89,4 @@
       
   });
 </script>
-</html>
+@endsection
